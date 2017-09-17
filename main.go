@@ -5,6 +5,7 @@ import (
 	"os"
 
 	"github.com/trenofacile/bot/plugins"
+	"github.com/trenofacile/bot/witai"
 )
 
 func main() {
@@ -17,7 +18,12 @@ func main() {
 		log.Fatal(err)
 	}
 
-	b.AddPlugin(&plugins.EchoPlugin{})
+	witAIClient, err := witai.NewClient(os.Getenv("WITAI_TOKEN"))
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	b.AddPlugin(plugins.NewWitAIPlugin(witAIClient))
 
 	err = b.Start()
 	if err != nil {
